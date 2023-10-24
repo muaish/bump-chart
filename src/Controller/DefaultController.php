@@ -16,7 +16,7 @@ class DefaultController extends AbstractController
         // prepare the template with d3js
         return $this->render('base.html.twig', [
             'page_title' => 'Bump Chart Demo',
-            'page_content' => '<h1>Bump Chart</h1><p>Test</p>'
+            'page_content' => '<h1>Bump Chart</h1><p>Test</p><div id="chart"></div>'
         ]);
     }
 }

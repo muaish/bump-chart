@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\DataUtil;
+use App\Service\AppUtil;
 
 class DataController extends AbstractController
 {
@@ -15,14 +15,14 @@ class DataController extends AbstractController
 
     #[Route("/api/data", name:"api_data")]
     public function apiData(
-        DataUtil $data_util,
+        AppUtil $util,
         #[Autowire('%kernel.project_dir%')]
         string $project_dir
     ): JsonResponse
     {
         // Retrieve data from xlsx file
-        $filepath = implode(DIRECTORY_SEPARATOR, [$project_dir, 'data', 'data.xlsx']);
-        $raw = $data_util::readExcelSheets($filepath);
-        return new JsonResponse($raw);
+        $filepath = implode(DIRECTORY_SEPARATOR, [$project_dir, 'data', 'data-2.xlsx']);
+        $data = $util::getData($filepath);
+        return new JsonResponse($data);
     }
 }

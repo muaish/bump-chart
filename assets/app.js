@@ -7,18 +7,18 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
-import * as d3 from 'd3';
 import { BumpChart } from './bump-chart';
 
 fetch('api/data')
+//fetch('example.json')
   .then(r => r.json())
   .then(d => {
     console.log(d);
-    const adder = new d3.Adder();
-    adder.add(1);
-    adder.add(5);
-    console.log(adder.valueOf());
-    const bump_chart = new BumpChart();
-    // bump_chart.data = d;
-    // bump_chart.render();
+    const bump_chart = new BumpChart(d, {
+      stages: {
+        spacing: 100
+      }
+    });
+    console.log(bump_chart);
+    bump_chart.render();
   });

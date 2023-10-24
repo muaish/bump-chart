@@ -1,0 +1,48 @@
+{
+  "stages": [
+    {
+      "label": "2022",
+      "max": 3
+    },
+    {
+      "label": "2023",
+      "max": 3
+    }
+  ],
+  "color": [
+    "#F6B801",
+    "#F18700",
+    "#F35B05",
+    "#D51D25"
+  ],
+  "items": [
+    {
+      "label": "item 1",
+      "data": [
+        100,
+        200
+      ]
+    },
+    {
+      "label": "item 2",
+      "data": [
+        150,
+        100
+      ]
+    },
+    {
+      "label": "item 3",
+      "data": [
+        50,
+        null
+      ]
+    },
+    {
+      "label": "item 4",
+      "data": [
+        null,
+        150
+      ]
+    }
+  ]
+}
