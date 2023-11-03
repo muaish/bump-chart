@@ -1,0 +1,29 @@
+{
+    "type": "VerticalLayout",
+    "elements": [
+      {
+        "type": "Control",
+        "scope": "#/properties/line_width"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/stages/properties/label/properties/background"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/stages/properties/label/properties/align_ends"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/item/properties/size"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/item/properties/label/properties/position"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/item/properties/margin"
+      }
+    ]
+  }

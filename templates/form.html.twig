@@ -1,0 +1,15 @@
+{# templates/jsonforms/form.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bump Chart Forms</title>
+</head>
+<body>
+    <div id="jsonforms"></div>
+
+    {% block javascripts %}
+            {{ encore_entry_script_tags('dataconfig') }}
+    {% endblock %}
+</body>
+</html>

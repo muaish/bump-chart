@@ -44,6 +44,7 @@ class AppUtil
       'items' => $items,
       'color' => array_map(function($x){ return $x[0]; }, $raw['color']),
     ];
+    // return $raw;
     return $ret;
   }
 }

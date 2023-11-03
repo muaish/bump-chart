@@ -1,0 +1,16 @@
+{
+    "line_width": 3,
+    "stages": {
+        "label": {
+            "background": "orange",
+            "align_ends": ""
+        }
+    },
+    "item": {
+        "size": "",
+        "label": {
+            "position": ""
+        },
+        "margin": ""
+    }
+}

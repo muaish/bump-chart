@@ -1,0 +1,46 @@
+{
+    "type": "object",
+    "properties": {
+      "line_width": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      },
+      "stages": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "object",
+            "properties": {
+              "background": { "type": "string" },
+              "align_ends": { "type": "boolean"}
+            }
+          }
+        }
+      },
+      "item": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 100
+          },
+          "label": {
+            "type": "object",
+            "properties": {
+              "position": {
+                "type": "string",
+                "enum": ["start", "end" , "both"]
+              }
+            }
+          },
+          "margin": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    }
+  }

@@ -21,6 +21,8 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('dataconfig', './assets/dataconfig.js')
+
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -46,6 +48,9 @@ Encore
     // .configureBabel((config) => {
     //     config.plugins.push('@babel/a-babel-plugin');
     // })
+    .configureBabel((config) => {
+        config.presets.push('@babel/preset-react');
+      })
 
     // enables and configure @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
