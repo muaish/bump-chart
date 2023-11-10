@@ -1,16 +1,21 @@
 {
-    "line_width": 3,
     "stages": {
         "label": {
-            "background": "orange",
-            "align_ends": ""
-        }
+            "align_ends": true,
+            "margin": 10,
+            "size": 30,
+            "background": "red",
+            "color": "#CCC"
+        },
+        "spacing": 200
     },
     "item": {
-        "size": "",
         "label": {
-            "position": ""
+            "position": "both",
+            "gap": 30
         },
-        "margin": ""
-    }
+        "size": 40,
+        "margin": 10
+    },
+    "line_width": 2
 }

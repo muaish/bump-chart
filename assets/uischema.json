@@ -1,29 +1,78 @@
 {
-    "type": "VerticalLayout",
-    "elements": [
-      {
-        "type": "Control",
-        "scope": "#/properties/line_width"
-      },
-      {
-        "type": "Control",
-        "scope": "#/properties/stages/properties/label/properties/background"
-      },
-      {
-        "type": "Control",
-        "scope": "#/properties/stages/properties/label/properties/align_ends"
-      },
-      {
-        "type": "Control",
-        "scope": "#/properties/item/properties/size"
-      },
-      {
-        "type": "Control",
-        "scope": "#/properties/item/properties/label/properties/position"
-      },
-      {
-        "type": "Control",
-        "scope": "#/properties/item/properties/margin"
-      }
-    ]
-  }
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "label": "General",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/line_width",
+          "label": "Line Width (All elements) (pixels)"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/stages/properties/spacing",
+          "label": "Spacing between Bumps (pixels)"
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "label": "Top Labels",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/stages/properties/label/properties/background",
+          "label": "Label Background Colour"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/stages/properties/label/properties/color",
+          "label": "Label Text Colour"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/stages/properties/label/properties/margin",
+          "label": "Label Bottom Spacing (pixels)"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/stages/properties/label/properties/size",
+          "label": "Label Height (pixels)"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/stages/properties/label/properties/align_ends",
+          "label": "Alignment end labels to Bumps"
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "label": "Bumps",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/item/properties/size",
+          "label": "Bump Size (pixels)"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/item/properties/label/properties/position",
+          "label": "Labels for Bumps"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/item/properties/label/properties/gap",
+          "label": "Horizontal Spacing between Labels and Bumps (pixels)"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/item/properties/margin",
+          "label": "Vertical Spacing between Bumps (pixels)"
+        }
+      ]
+    }
+  ]
+}

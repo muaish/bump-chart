@@ -14,5 +14,20 @@
     </head>
     <body>
         {% block body %}{{ page_content|raw }}{% endblock %}
+        {% block content %}
+            <hr/>
+            <h1>Data Files</h1>
+            <label for="dataSelect">Select a Data File:</label>
+            <select id="dataSelect">
+                {% for file in files %}
+                    <option value="{{ file }}">{{ file }}</option>
+                {% endfor %}
+            </select>
+            <hr/>
+            <ul>
+            <li><a href="/upload" target="_blank">Upload new files</a></li>
+            <li><a href="/config" target="_blank">Change configuration</a></li>
+            </ul>
+        {% endblock %}
     </body>
 </html>

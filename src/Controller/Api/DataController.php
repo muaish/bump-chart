@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AppUtil;
+use Symfony\Component\HttpFoundation\Request;
 
 class DataController extends AbstractController
 {
@@ -16,28 +17,21 @@ class DataController extends AbstractController
     {
     }
 
-    // #[Route("/api/data", name:"api_data")]
-    // public function apiData(
-    //     AppUtil $util,
-    //     #[Autowire('%kernel.project_dir%')]
-    //     string $project_dir
-    // ): JsonResponse
-    // {
-    //     // Retrieve data from xlsx file
-    //     $filepath = implode(DIRECTORY_SEPARATOR, [$project_dir, 'data', 'data-2.xlsx']);
-    //     $data = $util::getData($filepath);
-    //     return new JsonResponse($data);
-    // }
-
-    #[Route("/api/data/{dataName}", name: "api_data")]
+    #[Route("/api/data/load", name: "api_data_load", methods: "POST")]
     public function apiData(
         AppUtil $util,
         #[Autowire('%kernel.project_dir%')]
         string $project_dir,
-        string $dataName
+        Request $request
     ): JsonResponse {
-        // Retrieve data from xlsx file
-        $filepath = implode(DIRECTORY_SEPARATOR, [$project_dir, 'data', $dataName . '.xlsx']);
+
+        $selectedFile = $request->request->get('selectedFile');
+
+        if (empty($selectedFile)) {
+
+            return new JsonResponse(['error' => 'No file selected'], 400);
+        }
+        $filepath = implode(DIRECTORY_SEPARATOR, [$project_dir, 'data', $selectedFile]);
         $data = $util::getData($filepath);
         return new JsonResponse($data);
     }
@@ -51,7 +45,6 @@ class DataController extends AbstractController
         if (!file_exists($filepath)) {
             throw $this->createNotFoundException('JSON file not found');
         }
-        // Read the JSON file
         $jsonData = file_get_contents($filepath);
         $data = json_decode($jsonData, true);
 

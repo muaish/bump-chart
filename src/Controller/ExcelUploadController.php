@@ -2,39 +2,32 @@
 
 namespace App\Controller;
 
-use App\Form\ExcelUploadType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\FileUploader;
+use App\Form\FileUploadType;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ExcelUploadController extends AbstractController
 {
-    public function uploadExcel(Request $request): Response
-    {
-        $form = $this->createForm(ExcelUploadType::class);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form['file']->getData();
-            $outputFilePath = ''; // Set the desired output path
+  #[Route("/upload", name: "app_upload")]
+  public function excelCommunesAction(Request $request, FileUploader $file_uploader)
+  {
+    $form = $this->createForm(FileUploadType::class);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+      $file = $form['upload_file']->getData();
 
-            // Move the uploaded file to the desired location
-            $file->move(\dirname($outputFilePath), \basename($outputFilePath));
+      if ($file) {
 
-            // Process the uploaded Excel file
-            $spreadsheet = IOFactory::load($outputFilePath);
-            // Add your processing logic here
-
-            // Optionally, you can display a success message to the user
-            $this->addFlash('success', 'Excel file uploaded and processed successfully.');
-
-            return $this->redirectToRoute('your_success_route');
-        }
-
-        return $this->render('excel_upload/index.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $file_uploader->upload($file);
+        return $this->redirectToRoute('app_upload');
+      }
     }
+    return $this->render('upload.html.twig', [
+      'form' => $form->createView(),
+    ]);
+  }
 }

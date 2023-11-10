@@ -8,8 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DataConfigController extends AbstractController
 {
-    
-    #[Route("/config", name:"data_config")]
+    #[Route("/config", name: "data_config")]
     public function dataConfig(): Response
     {
         return $this->render('form.html.twig');

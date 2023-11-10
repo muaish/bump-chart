@@ -1,46 +1,80 @@
 {
-    "type": "object",
-    "properties": {
-      "line_width": {
-        "type": "integer",
-        "minimum": 1,
-        "maximum": 100
-      },
-      "stages": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "object",
-            "properties": {
-              "background": { "type": "string" },
-              "align_ends": { "type": "boolean"}
+  "type": "object",
+  "properties": {
+    "line_width": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "stages": {
+      "type": "object",
+      "properties": {
+        "spacing": {
+          "type": "integer",
+          "minimum": 50,
+          "maximum": 500
+        },
+        "label": {
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            },
+            "margin": {
+              "type": "integer"
+            },
+            "size": {
+              "type": "integer"
+            },
+            "align_ends": {
+              "type": "boolean"
             }
           }
         }
-      },
-      "item": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "integer",
-            "minimum": 10,
-            "maximum": 100
-          },
-          "label": {
-            "type": "object",
-            "properties": {
-              "position": {
-                "type": "string",
-                "enum": ["start", "end" , "both"]
-              }
+      }
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 100
+        },
+        "label": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "string",
+              "oneOf": [
+                {
+                  "const": "start",
+                  "title": "Starting Bumps only"
+                },
+                {
+                  "const": "end",
+                  "title": "Ending Bumps only"
+                },
+                {
+                  "const": "both",
+                  "title": "Starting & Ending Bumps"
+                }
+              ]
+            },
+            "gap": {
+              "type": "integer"
             }
-          },
-          "margin": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 100
           }
+        },
+        "margin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     }
   }
+}

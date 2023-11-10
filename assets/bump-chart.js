@@ -29,18 +29,13 @@ export class BumpChart {
     }
   };
 
-  //check the margin
-  //settings to configure as much as possible for the attributes
-
-  //change this to deep merge
   constructor(data, settings = {}) {
     this.settings = deepmerge(this.settings, settings); //assignObject wont go through the dictionary further than deepmerge
     this.data = data;
-    console.log(this.settings, settings)
   }
 
   render = function () {
-    
+
     const n_rows = this.data.items.length;
     const size = this.settings.item.size;
     const x_space = this.settings.stages.spacing;
@@ -49,7 +44,6 @@ export class BumpChart {
     const r = size / 2;
     const _r = r + line_width / 2;
     const font_size = size - line_width * 6;
-
     const y_gap = this.settings.stages.label.margin;
     const rectSize = this.settings.stages.label.size;
     const rectFont = rectSize - line_width * 6;
@@ -57,14 +51,13 @@ export class BumpChart {
     // since no interaction, just draw out the svg
     const container = d3.select(this.settings.selector);
     this.svg = container.append('svg');
-    //.attr('width', 10)
-    // .attr('height', n_rows * this.settings.item.size + (n_rows - 1) * this.settings.item.margin);
+
     const colors = this.data.color;
     const titleColor = this.settings.stages.label.color;
     const titleBackground = this.settings.stages.label.background;
     const groups = {};
 
-    //create two groups inside one svg
+    //creating two groups inside one svg
     const titleStage = this.svg.append('g');
     const labelStage = this.svg.append('g')
       .attr('transform', `translate(0, ${y_gap})`);;
@@ -86,7 +79,6 @@ export class BumpChart {
     let prev_stage = null;
     let next_stage = null;
     let current_stage = null;
-
     let start_x = 0;
     let max_rows = 0;
     let rect_x = 0;
@@ -95,7 +87,6 @@ export class BumpChart {
     let rectWidthEnd = 0;
     let rectWidth = 0;
 
-
     this.data.stages.forEach((stage, si) => {
       let is_first = si === 0;
       let is_last = si === (this.data.stages.length - 1);
@@ -103,6 +94,8 @@ export class BumpChart {
       if (stage.max > max_rows) {
         max_rows = stage.max + 1;
       }
+
+      //stage title label:
       const title_y = rect_y + (rectSize / 2) + (rectFont / 2.5);
       const TitleGroup = titleStage.append('g')
         .attr('font-size', rectFont)
@@ -123,7 +116,7 @@ export class BumpChart {
         .text(stage.label);
 
       const rw = ttg.node().getComputedTextLength();
-      rectWidth = rw + this.settings.item.label.gap;
+      rectWidth = rw + (this.settings.item.label.gap / 2);
 
       if (current_stage === null) {
         current_stage = this.data.items.sortByIndex({ index: si, dir: 'desc' }).slice(0, stage.max);
@@ -131,7 +124,6 @@ export class BumpChart {
       if (next_stage === null && typeof this.data.stages[si + 1] !== 'undefined') {
         next_stage = this.data.items.sortByIndex({ index: si + 1, dir: 'desc' }).slice(0, this.data.stages[si].max);
       }
-
       if (is_first && (this.settings.item.label.position === 'both' || this.settings.item.label.position === 'start')) {
 
       }
@@ -145,6 +137,7 @@ export class BumpChart {
           const labelHeight = rectSize + y_gap;
           const cir_y = y * (y_space + size) + r;
           const text_y = (cir_y + font_size * 0.35) + labelHeight;
+          console.log(x.data)
 
           const l = g.append('text')
             .attr('y', text_y)
@@ -167,13 +160,12 @@ export class BumpChart {
         start_x = mw + this.settings.item.label.gap;
       }
       const gs = rectWidth - size
-      
-      if(is_first && this.settings.item.label.position === 'end' ){     
-        start_x += gs ;
+
+      if (is_first && this.settings.item.label.position === 'end') {
+        start_x += gs;
       }
       // bump chart: circle and line
       current_stage.forEach((x, y) => {
-        
         let exists;
         if (!is_last) {
           exists = next_stage ? next_stage.map(y => y.label).indexOf(x.label) >= 0 : false;
@@ -191,16 +183,13 @@ export class BumpChart {
         if (next_stage) {
           const y2 = next_stage.indexOf(x);
           if (y2 >= 0) {
-            // console.log(y, y2);
             const x1 = start_x + size + line_width / 2;
             g.append('line')
               .attr('x1', x1)
               .attr('y1', cir_y + labelHeight)
-              // .attr('y1', y * (size + y_space) + _r)
               .attr('x2', x1 + x_space + line_width / 2)
               .attr('y2', (y2 * (size + y_space) + _r) + labelHeight);
           }
-          
         }
         const c = g.append('circle')
           .attr('cx', cir_x)
@@ -221,7 +210,6 @@ export class BumpChart {
             .attr('stroke-dasharray', '10 3');
           t.attr('fill', x.color);
         }
-
       });
       start_x += size + (is_last ? 0 : x_space);
 
@@ -245,14 +233,12 @@ export class BumpChart {
             mw = w;
           }
           rectWidthEnd = mw;
-
         });
         start_x += mw;
       }
 
-      //label for stage title width and position
+      //label for stage title width and position:
       if (is_first && this.settings.stages.label.align_ends === true) {
-
         rtg.attr('width', rectWidthStart + this.settings.item.label.gap + size);
         ttg.attr('x', rect_x)
         ttg.attr('text-anchor', 'end');
@@ -261,17 +247,14 @@ export class BumpChart {
           ttg.attr('text-anchor', 'start')
           ttg.attr('x', rect_x)
           ttg.attr('text-anchor', 'end')
-
         }
       }
-
       else if (is_last && this.settings.stages.label.align_ends === true) {
         rtg.attr('width', rectWidthEnd + this.settings.item.label.gap + size)
         ttg.attr('x', rect_x)
-          if (this.settings.item.label.position === 'start') {
-           rtg.attr('width', rectWidth)
-         }
-
+        if (this.settings.item.label.position === 'start') {
+          rtg.attr('width', rectWidth)
+        }
       }
       else {
         rtg.attr('width', rectWidth)
@@ -279,16 +262,13 @@ export class BumpChart {
         ttg.attr('x', rect_x)
           .attr('text-anchor', 'middle');
       }
-
       prev_stage = current_stage;
       current_stage = next_stage;
       next_stage = null;
     });
-
     this.svg
       .attr('width', start_x + rectWidthEnd + rectWidth)
       .attr('height', max_rows * this.settings.item.size + (max_rows - 1) * this.settings.item.margin + this.settings.line_width + y_gap + rectSize);
-
     return this.svg.node();
   }
 };
