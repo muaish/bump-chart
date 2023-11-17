@@ -1,94 +1,89 @@
 import './styles/app.css';
 import { BumpChart } from './bump-chart';
-import { forEach } from 'core-js/features/array';
 
 let bump_chart = new BumpChart();
+const dataSelect = document.getElementById('dataSelect');
 
-function fetchDataAndRender(selectedFile) {
-  const formData = new FormData();
-  formData.append('selectedFile', selectedFile);
-
-  console.log(bump_chart.initialized);
-
-  if (bump_chart.initialized) {
-    fetch('api/data/load', {
-      method: 'POST',
-      body: formData,
-    })
-      .then(r => r.json())
-      .then(d => {
-        const existingGraph = document.getElementById('chart');
-        if (existingGraph) {
-          existingGraph.innerHTML = '';
-        }
-        bump_chart = new BumpChart(d);
-        bump_chart.render();
-      })
-      .catch(error => {
-        console.error('Error loading data:', error);
-      });
-  }
-  else {
-    fetch('api/json')
-      .then(response => response.json())
-      .then(updatedSettings => {
-
-        bump_chart = new BumpChart(null, updatedSettings);
-        bump_chart.initialized = true;
-
-        fetch('api/data/load', {
-          method: 'POST',
-          body: formData,
+function initialize() {
+  return new Promise((resolve, reject) => {
+    if (bump_chart.initialized) {
+      resolve();
+    } else {
+      fetchConfig()
+        .then(settings => {
+          bump_chart = new BumpChart({}, settings);
+          bump_chart.initialized = true;
+          resolve();
         })
-          .then(r => r.json())
-          .then(d => {
+        .catch(e => reject(e));
+    }
+  });
+}
 
-            
-            const existingGraph = document.getElementById('chart');
-            if (existingGraph) {
-              existingGraph.innerHTML = '';
-            }
-            bump_chart.data = d;
-            bump_chart.render();
-          })
-          .catch(error => {
-            console.error('Error loading data:', error);
-          });
-        
-        //console.log(bump_chart);
-      })
-      .catch(error => {
-        console.error('Error fetching JSON settings:', error);
-      });
-    bump_chart.initialized = true;
+function fetchConfig() {
+  return fetch('api/json')
+    .then(r => r.json());
+};
+
+function fetchData(selectedFile) {
+  const url = `api/data/load?selectedFile=${selectedFile}`
+  return fetch(url)
+    .then(r => r.json());
+
+};
+
+function changeDataSelect(targetValue, triggerChange = false) {
+  if (dataSelect.value !== targetValue && dataSelect.querySelectorAll(`option[value = "${targetValue}"]`).length > 0) {
+    dataSelect.querySelectorAll('option').forEach(x => {
+      if (x.value === targetValue) {
+        x.setAttribute('selected', 'selected');
+      }
+      else {
+        x.removeAttribute('selected');
+      }
+    });
+    if (triggerChange) {
+      dataSelect.dispatchEvent(new Event('change'));
+    }
+  }
+}
+
+function HashChange(selectedFile) {
+  const hash = window.location.hash.slice(1);
+  if (hash !== dataSelect.value) {
+    changeDataSelect(hash, false);
+  }
+  initialize()
+    .then(() => {
+      fetchData(hash)
+        .then(d => {
+          removeExistingChart();
+          bump_chart.data = d;
+          bump_chart.render();
+        });
+    });
+}
+
+function removeExistingChart() {
+  const chart = document.getElementById('chart');
+  const existingChart = chart.querySelector('svg')
+
+  if (existingChart) {
+    existingChart.remove();
   }
 }
 
 document.getElementById('dataSelect').addEventListener('change', function (event) {
-  const selectedFile = document.getElementById('dataSelect').value;
-  fetchDataAndRender(selectedFile);
+  const selectedFile = dataSelect.value;
   window.location.href = '#' + selectedFile;
 });
 
 window.addEventListener('DOMContentLoaded', function () {
   const selectedFile = window.location.hash.slice(1);
   if (selectedFile) {
-    const dataSelect = document.getElementById('dataSelect');
-    const allOptions = dataSelect.querySelectorAll('option');
-
-    allOptions.forEach((option) => {
-      const optionName = option.value;
-
-      if (optionName === selectedFile) {
-        option.setAttribute('selected', true);
-      } else {
-        option.removeAttribute('selected');
-      }
-    });
-    fetchDataAndRender(selectedFile);
+    changeDataSelect(selectedFile, false);
+    window.dispatchEvent(new HashChangeEvent('hashchange'));
   }
 });
 
-window.onhashchange = function () {
-  location.reload();
-};
+window.addEventListener('hashchange', HashChange);

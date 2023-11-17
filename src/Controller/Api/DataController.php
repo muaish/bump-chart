@@ -17,7 +17,7 @@ class DataController extends AbstractController
     {
     }
 
-    #[Route("/api/data/load", name: "api_data_load", methods: "POST")]
+    #[Route("/api/data/load", name: "api_data_load", methods: "GET")]
     public function apiData(
         AppUtil $util,
         #[Autowire('%kernel.project_dir%')]
@@ -25,7 +25,7 @@ class DataController extends AbstractController
         Request $request
     ): JsonResponse {
 
-        $selectedFile = $request->request->get('selectedFile');
+        $selectedFile = $request->query->get('selectedFile');
 
         if (empty($selectedFile)) {
 

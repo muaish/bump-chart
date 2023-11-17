@@ -50,6 +50,7 @@ export class BumpChart {
 
     // since no interaction, just draw out the svg
     const container = d3.select(this.settings.selector);
+
     this.svg = container.append('svg');
 
     const colors = this.data.color;
@@ -60,7 +61,7 @@ export class BumpChart {
     //creating two groups inside one svg
     const titleStage = this.svg.append('g');
     const labelStage = this.svg.append('g')
-      .attr('transform', `translate(0, ${y_gap})`);;
+      .attr('transform', `translate(0, ${y_gap})`);
 
     this.data.items.sortByIndex({ dir: 'desc' }).forEach((x, i) => {
       if (typeof x.color === 'undefined') {
@@ -73,6 +74,9 @@ export class BumpChart {
           .attr('stroke-width', line_width)
           .attr('font-size', font_size)
           .attr('alignment-baseline', 'middle');
+      }
+      if (typeof groups[x.data] === 'undefined') {
+        groups[x.data] = labelStage.append('g');
       }
     });
 
@@ -100,6 +104,7 @@ export class BumpChart {
       const TitleGroup = titleStage.append('g')
         .attr('font-size', rectFont)
         .attr('alignment-baseline', 'middle')
+
 
       const rtg = TitleGroup.append('rect')
         .attr('x', start_x)
@@ -137,13 +142,13 @@ export class BumpChart {
           const labelHeight = rectSize + y_gap;
           const cir_y = y * (y_space + size) + r;
           const text_y = (cir_y + font_size * 0.35) + labelHeight;
-          console.log(x.data)
+
 
           const l = g.append('text')
             .attr('y', text_y)
             .attr('stroke-width', line_width * 0.25)
             .attr('text-anchor', 'right')
-            .text(x.label);
+            .text(x.label)
 
           const w = l.node().getComputedTextLength();
           if (w > mw) {
@@ -166,6 +171,7 @@ export class BumpChart {
       }
       // bump chart: circle and line
       current_stage.forEach((x, y) => {
+
         let exists;
         if (!is_last) {
           exists = next_stage ? next_stage.map(y => y.label).indexOf(x.label) >= 0 : false;
@@ -195,6 +201,7 @@ export class BumpChart {
           .attr('cx', cir_x)
           .attr('cy', cir_y + labelHeight)
           .attr('r', r);
+
         const t = g.append('text')
           .attr('x', cir_x)
           .attr('y', text_y + labelHeight)
@@ -227,7 +234,8 @@ export class BumpChart {
             .attr('y', text_y)
             .attr('stroke-width', line_width * 0.25)
             .attr('text-anchor', 'left')
-            .text(x.label);
+            .text(x.label)
+
           const w = l.node().getComputedTextLength();
           if (w > mw) {
             mw = w;
